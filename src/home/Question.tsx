@@ -9,15 +9,17 @@ import {
 } from "@/components/ui/card";
 import { setAnswer } from "@/redux/features/quiz/quizSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import QuizControl from "./QuizControl";
 
 const Question = () => {
   const dispatch = useAppDispatch();
-  const { question, currentQuestionIndex } = useAppSelector(
+
+  const { question, currentQuestionIndex, userAnswers } = useAppSelector(
     (state) => state.quiz
   );
 
   const currentQuestion = question[currentQuestionIndex];
-  console.log(currentQuestion);
+  const currentAnswer = userAnswers[currentQuestionIndex];
 
   const handleAnswesChange = (answer: string) => {
     dispatch(setAnswer({ questionIndex: currentQuestionIndex, answer }));
@@ -39,14 +41,14 @@ const Question = () => {
               className="w-full mt-5"
               size={"lg"}
               key={index}
+              variant={option === currentAnswer ? "default" : "outline"}
             >
               {option}
             </Button>
           ))}
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
+        <CardFooter>
+          <QuizControl />
         </CardFooter>
       </Card>
     </div>
