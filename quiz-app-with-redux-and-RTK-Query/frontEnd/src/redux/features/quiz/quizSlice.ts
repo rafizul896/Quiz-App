@@ -1,15 +1,16 @@
+import { TQuizQuestion } from "@/global.type";
 import { quizData } from "@/home/quizData";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface TQuizSlice {
-  question: typeof quizData;
+  question: TQuizQuestion[];
   currentQuestionIndex: number;
   userAnswers: (string | null)[];
   quizComplete: boolean;
 }
 
 const initialState: TQuizSlice = {
-  question: quizData,
+  question: [],
   currentQuestionIndex: 0,
   userAnswers: Array(quizData.length).fill(null),
   quizComplete: false,
@@ -36,8 +37,19 @@ export const quizSlice = createSlice({
     completeQuize: (state) => {
       state.quizComplete = true;
     },
+    setQuiz: (state, action) => {
+      const { quiz } = action.payload;
+      state.question = quiz;
+      state.quizComplete= false
+    },
   },
 });
 
 export default quizSlice.reducer;
-export const { setAnswer, nextQuestion, previousQuestion, completeQuize } = quizSlice.actions;
+export const {
+  setAnswer,
+  nextQuestion,
+  previousQuestion,
+  completeQuize,
+  setQuiz,
+} = quizSlice.actions;
